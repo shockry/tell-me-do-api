@@ -21,10 +21,16 @@ exports.insert = function(model, data) {
   });
 };
 
-exports.get = function(model, query) {
+exports.getFirst = function(model, query) {
   return new Promise(resolve => {
     resolve(database[model].find(item => compare(item, query)));
   });
+};
+
+exports.get = function(model, query) {
+  return new Promise(resolve =>
+    resolve(database[model].filter(item => compare(item, query)))
+  );
 };
 
 function compare(item, query) {

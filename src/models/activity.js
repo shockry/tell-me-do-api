@@ -5,5 +5,9 @@ exports.addActivityToUser = function(activity, userId) {
 };
 
 exports.getActivity = function(activityId) {
-  return database.get("activities", { id: activityId });
+  return database.getFirst("activities", { id: activityId });
+};
+
+exports.getUserActivities = function(userId) {
+  return database.get("activities", { user: userId });
 };
