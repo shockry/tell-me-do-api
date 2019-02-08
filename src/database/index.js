@@ -1,10 +1,22 @@
-const database = {};
+const fs = require("fs");
+
+const databaseFilePath = "/Users/shared/db/database";
+let database = {};
+
+exports.initializeDatabase = function() {
+  if (fs.existsSync(databaseFilePath)) {
+    const data = fs.readFileSync(databaseFilePath);
+    database = JSON.parse(data);
+  }
+};
 
 exports.insert = function(model, data) {
   return new Promise(resolve => {
     database[model] = database[model] || [];
     database[model].push(data);
-    resolve(true);
+    fs.writeFile(databaseFilePath, JSON.stringify(database), () => {
+      resolve(true);
+    });
   });
 };
 

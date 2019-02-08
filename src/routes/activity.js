@@ -9,7 +9,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  await activityModel.addActivity({ id: 2, user: "Batman" });
+  await activityModel.addActivity(req.body);
   res.sendStatus(200);
 });
 
