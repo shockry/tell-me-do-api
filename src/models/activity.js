@@ -1,7 +1,7 @@
 const database = require("../database");
 
-exports.addActivity = function(activity) {
-  return database.insert("activities", activity);
+exports.addActivityToUser = function(activity, userId) {
+  return database.insert("activities", { ...activity, user: userId });
 };
 
 exports.getActivity = function(activityId) {

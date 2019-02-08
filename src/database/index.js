@@ -6,14 +6,15 @@ let database = {};
 exports.initializeDatabase = function() {
   if (fs.existsSync(databaseFilePath)) {
     const data = fs.readFileSync(databaseFilePath);
-    database = JSON.parse(data);
+    database = data.length > 0 ? JSON.parse(data) : {};
   }
 };
 
 exports.insert = function(model, data) {
   return new Promise(resolve => {
     database[model] = database[model] || [];
-    database[model].push(data);
+    const randomId = Math.floor(Math.random() * 1000000 + 1);
+    database[model].push({ ...data, id: randomId });
     fs.writeFile(databaseFilePath, JSON.stringify(database), () => {
       resolve(true);
     });
