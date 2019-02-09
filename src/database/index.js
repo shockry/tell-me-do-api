@@ -15,9 +15,7 @@ exports.insert = function(model, data) {
     database[model] = database[model] || [];
     const randomId = Math.floor(Math.random() * 1000000 + 1);
     database[model].push({ ...data, id: randomId });
-    fs.writeFile(databaseFilePath, JSON.stringify(database), () => {
-      resolve(true);
-    });
+    commit(resolve);
   });
 };
 
@@ -38,9 +36,14 @@ exports.update = function(model, query, updatePatch) {
     database[model] = database[model].map(item =>
       compare(item, query) ? { ...item, ...updatePatch } : item
     );
-    fs.writeFile(databaseFilePath, JSON.stringify(database), () => {
-      resolve(true);
-    });
+    commit(resolve);
+  });
+};
+
+exports.delete = function(model, query) {
+  return new Promise(resolve => {
+    database[model] = database[model].filter(item => !compare(item, query));
+    commit(resolve);
   });
 };
 
@@ -51,4 +54,10 @@ function compare(item, query) {
     }
   }
   return true;
+}
+
+function commit(resolve) {
+  fs.writeFile(databaseFilePath, JSON.stringify(database), () => {
+    resolve(true);
+  });
 }

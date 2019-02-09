@@ -19,3 +19,7 @@ exports.updateActivity = function(activityId, updatePatch) {
     updatePatch
   );
 };
+
+exports.deleteActivity = function(activityId) {
+  return database.delete("activities", { id: parseInt(activityId) });
+};

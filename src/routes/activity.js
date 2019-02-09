@@ -2,7 +2,8 @@ const express = require("express");
 const activityModel = require("../models/activity");
 const {
   addActivityToUser,
-  updateActivity
+  updateActivity,
+  deleteActivity
 } = require("../controllers/activity");
 const auth = require("../middlewares/auth");
 
@@ -16,5 +17,6 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", auth, addActivityToUser);
 router.patch("/:id", auth, updateActivity);
+router.delete("/:id", auth, deleteActivity);
 
 module.exports = router;
