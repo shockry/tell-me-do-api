@@ -21,16 +21,27 @@ exports.insert = function(model, data) {
   });
 };
 
-exports.getFirst = function(model, query) {
+exports.findFirst = function(model, query) {
   return new Promise(resolve => {
     resolve(database[model].find(item => compare(item, query)));
   });
 };
 
-exports.get = function(model, query) {
+exports.find = function(model, query) {
   return new Promise(resolve =>
     resolve(database[model].filter(item => compare(item, query)))
   );
+};
+
+exports.update = function(model, query, updatePatch) {
+  return new Promise(resolve => {
+    database[model] = database[model].map(item =>
+      compare(item, query) ? { ...item, ...updatePatch } : item
+    );
+    fs.writeFile(databaseFilePath, JSON.stringify(database), () => {
+      resolve(true);
+    });
+  });
 };
 
 function compare(item, query) {

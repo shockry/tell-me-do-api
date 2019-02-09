@@ -5,9 +5,17 @@ exports.addActivityToUser = function(activity, userId) {
 };
 
 exports.getActivity = function(activityId) {
-  return database.getFirst("activities", { id: activityId });
+  return database.findFirst("activities", { id: parseInt(activityId) });
 };
 
 exports.getUserActivities = function(userId) {
-  return database.get("activities", { user: userId });
+  return database.find("activities", { user: userId });
+};
+
+exports.updateActivity = function(activityId, updatePatch) {
+  return database.update(
+    "activities",
+    { id: parseInt(activityId) },
+    updatePatch
+  );
 };
