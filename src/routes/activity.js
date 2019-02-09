@@ -1,5 +1,12 @@
 const express = require("express");
 const activityModel = require("../models/activity");
+const {
+  addActivityToUser,
+  updateActivity,
+  deleteActivity
+} = require("../controllers/activity");
+const auth = require("../middlewares/auth");
+
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
@@ -8,9 +15,8 @@ router.get("/:id", async (req, res) => {
   res.send(activity);
 });
 
-router.post("/", async (req, res) => {
-  await activityModel.addActivity({ id: 2, user: "Batman" });
-  res.sendStatus(200);
-});
+router.post("/", auth, addActivityToUser);
+router.patch("/:id", auth, updateActivity);
+router.delete("/:id", auth, deleteActivity);
 
 module.exports = router;
